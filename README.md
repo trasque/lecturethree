@@ -47,13 +47,13 @@ https://github.com/trasque/lecturethree/blob/aa1928954a5b3282cd95690bd753fcb54d0
 
 どちらの例外でも以下の設定を行います  
 この設定値は 3組で 1つの HashMap `controllerStatus` として保持し、値を変更して動作を制御します。
-- メインメニューを終了するかどうか : MENU_CONTROLL_INT
+- メインメニューのどの機能を選んだか : MENU_CONTROLL_INT
 - エラーハンドラクラスへどのような処理の指示を渡すか : ERROR_HANDLER
 - Scanner `System.in` を `close()` するかどうか : DO_CLOSE_SCANNER
 
 https://github.com/trasque/lecturethree/blob/439eaa8d36c3a3e41284aacea51de8a468e4fe07/src/java/main/AppController.java#L17-L20
 
-上記の設定は、以下の動作を引き起こします。  
+上記コードの設定は初期値ですが、例外の場合は以下の動作となるよう値を変更します。  
 1. メインメニューから抜け出しメインメソッドへ戻るようループを抜け出します。  
 2. その後、メインメソッドへの戻り値を利用し、エラーハンドラクラスへ値を渡します。  
 3. この値を受けてエラーハンドラは（今回は 1パターンのみのハンドルですが）メインメニューを再実行するための値を返します。
@@ -138,8 +138,8 @@ https://github.com/trasque/lecturethree/blob/aa1928954a5b3282cd95690bd753fcb54d0
 
 ### 数値以外を入力する
 
-`>> 半角数値で入力してください` と表示され、メインメニューが再実行される。
-上記と同様に `mainMenu()` を抜け出し再実行のエラーハンドリングを行う。
+`>> 半角数値で入力してください` と表示され、メインメニューが再実行されます。
+上記と同様に `mainMenu()` を抜け出し再実行のエラーハンドリングを行います。
 
 ```
 >> 1. List表示 / 2. Map表示 / 0. 終了 -> z
