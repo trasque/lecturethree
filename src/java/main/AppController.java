@@ -1,47 +1,87 @@
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AppController {
   private AppController() {
   }
 
-  private static final int MAIN_MENU_EXIT = -1;               // メインメニュー終了
-  private static final int INPUT_MISMATCH_EXCEPTION_INT = 1;  // 数字以外が入力された場合 一度メインメソッドへ抜けて再実行
-  private static boolean doCloseScanner = true;               // プログラムを終了させる場合 scanner を閉じる
+  private static final int MAIN_MENU_EXIT = -1;                       // メインメニュー終了
+  private static final int RE_EXECUTE = 1;                            // エラーハンドリング：再実行要請 数値以外や範囲外入力
+  private static final String MENU_CONTROLL_INT = "menuControllInt";  // Scanner でメニュー番号を格納する
+  private static final String ERROR_HANDLER = "errorHandler";         // エラー時の動作分岐を指示する値
+  private static final String DO_CLOSE_SCANNER = "doCloseScanner";    // プログラム終了時に Scanner を閉じる指示をする
 
   public static int mainMenu() {
     Scanner menuControllScanner = new Scanner(System.in);
-    int menuControllInt;
-    int errorHandler = 0;
+    Map<String, Integer> controllerStatus = new HashMap<>();
+    controllerStatus.put(MENU_CONTROLL_INT, 0);
+    controllerStatus.put(ERROR_HANDLER, 0);
+    controllerStatus.put(DO_CLOSE_SCANNER, 1);
+    int scannerInput = 0;
 
     do {
-      menuControllInt = 0;
-      System.out.print(">> 1. List表示 / 2. Map表示 / 0. 終了-> ");
+      controllerStatus.replace(MENU_CONTROLL_INT, 0);
+      System.out.print(">> 1. List表示 / 2. Map表示 / 0. 終了 -> ");
+
+      // 値のフィルタリングのために例外を利用するのは本来の用途ではなさそう
+      // 今回は練習のために文字や範囲外を入力すると例外が出るようにしました
+      // Scanner.hasNextInt() でScannerを進めずに値を保持できるらしく
+      // きちんと実装する際にはこれを使ってみたいと思います。
       try {
-        menuControllInt = menuControllScanner.nextInt();
+        scannerInput = menuControllScanner.nextInt();
+        controllerStatus.replace(MENU_CONTROLL_INT, scannerInput);
+        if (scannerInput < 0 || 2 < scannerInput) throw new Exception("out of range input.");
       } catch (InputMismatchException e) {
-        System.out.println("半角数値で入力してください");
-        menuControllInt = MAIN_MENU_EXIT;
-        errorHandler = INPUT_MISMATCH_EXCEPTION_INT;
-        doCloseScanner = false;
+        intWarning(controllerStatus);
+        continue;
+      } catch (Exception e) {
+        outOfRangeWarning(controllerStatus);
         continue;
       }
 
-      switch (menuControllInt) {
+      switch (controllerStatus.get(MENU_CONTROLL_INT)) {
         case 1 -> {
-          System.out.println(1);
+          displayList();
         }
         case 2 -> {
           System.out.println(2);
         }
         case 0 -> {
-          menuControllInt = MAIN_MENU_EXIT;
+          controllerStatus.replace(MENU_CONTROLL_INT, MAIN_MENU_EXIT);
+        }
+        default -> {
+          outOfRangeWarning(controllerStatus);
         }
       }
     }
-    while(menuControllInt != MAIN_MENU_EXIT);
+    while(controllerStatus.get(MENU_CONTROLL_INT) != MAIN_MENU_EXIT);
 
-    if (doCloseScanner) menuControllScanner.close();
-    return errorHandler;
+    if (controllerStatus.get(DO_CLOSE_SCANNER) == 1) menuControllScanner.close();
+    return controllerStatus.get(ERROR_HANDLER);
+  }
+
+  private static void displayList() {
+    ProgrammingElement languages = new LanguageList();
+    ProgrammingElement types = new TypeList();
+    languages.outputList();
+    types.outputList();
+  }
+
+  private static Map<String, Integer> intWarning(Map<String, Integer> controller) {
+    System.out.println(">> 半角数値で入力してください");
+    controller.replace(MENU_CONTROLL_INT, MAIN_MENU_EXIT);
+    controller.replace(ERROR_HANDLER, RE_EXECUTE);
+    controller.replace(DO_CLOSE_SCANNER, 0);
+    return controller;
+  }
+
+  private static Map<String, Integer> outOfRangeWarning(Map<String, Integer> controller) {
+    System.out.println(">> 1 ~ 2 の範囲で入力してください");
+    controller.replace(MENU_CONTROLL_INT, MAIN_MENU_EXIT);
+    controller.replace(ERROR_HANDLER, RE_EXECUTE);
+    controller.replace(DO_CLOSE_SCANNER, 0);
+    return controller;
   }
 }

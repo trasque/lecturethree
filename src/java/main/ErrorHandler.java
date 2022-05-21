@@ -4,7 +4,7 @@ public class ErrorHandler {
 
   public static int errorCommand(int command) {
     switch(command) {
-      // Scanner 失敗時：INTにINT以外が入力された
+      // エラーハンドリング1 : 再実行要請
       case 1 -> {
         System.out.println("]] 再実行 [[");
         return 1;
