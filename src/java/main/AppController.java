@@ -25,20 +25,13 @@ public class AppController {
       System.out.print(">> 1. List表示 / 2. Map表示 / 0. 終了 -> ");
 
       // 値のフィルタリングのために例外を利用するのは本来使途ではないという記事を見ました
-      // 今回は練習のために文字や範囲外を入力すると例外が出るようにしました
-      // Scanner.hasNextInt() でScannerを進めずに値を保持できるらしく
-      // きちんと実装する際にはこれを使ってみたいと思います。
+      // 今回は練習のために文字を入力すると例外が出るようにしました
       try {
-        scannerInput = menuControllScanner.nextInt();
-        controllerStatus.replace(MENU_CONTROLL_INT, scannerInput);
-        if (scannerInput < 0 || 2 < scannerInput)
-          throw new Exception("out of range input.");
+          scannerInput = menuControllScanner.nextInt();
       } catch (InputMismatchException e) {
-        intWarning(controllerStatus);
-        continue;
-      } catch (Exception e) {
-        outOfRangeWarning(controllerStatus);
+        notIntWarningAndSetRestart(controllerStatus);
       }
+      controllerStatus.replace(MENU_CONTROLL_INT, scannerInput);
 
       switch (controllerStatus.get(MENU_CONTROLL_INT)) {
         case 1 -> {
@@ -51,7 +44,7 @@ public class AppController {
           controllerStatus.replace(MENU_CONTROLL_INT, MAIN_MENU_EXIT);
         }
         default -> {
-          outOfRangeWarning(controllerStatus);
+          outOfRangeWarningAndSetRestart(controllerStatus);
         }
       }
     } while (controllerStatus.get(MENU_CONTROLL_INT) != MAIN_MENU_EXIT);
@@ -79,7 +72,7 @@ public class AppController {
     dialogue.outputMap();
   }
 
-  private static Map<String, Integer> intWarning(Map<String, Integer> controller) {
+  private static Map<String, Integer> notIntWarningAndSetRestart(Map<String, Integer> controller) {
     System.out.println(">> 半角数値で入力してください");
     controller.replace(MENU_CONTROLL_INT, MAIN_MENU_EXIT);
     controller.replace(ERROR_HANDLER, RE_EXECUTE);
@@ -87,7 +80,7 @@ public class AppController {
     return controller;
   }
 
-  private static Map<String, Integer> outOfRangeWarning(Map<String, Integer> controller) {
+  private static Map<String, Integer> outOfRangeWarningAndSetRestart(Map<String, Integer> controller) {
     System.out.println(">> 1 ~ 2 の範囲で入力してください");
     controller.replace(MENU_CONTROLL_INT, MAIN_MENU_EXIT);
     controller.replace(ERROR_HANDLER, RE_EXECUTE);
