@@ -21,11 +21,12 @@ public class LanguageList implements ProgrammingElement {
   public void outputList() {
     // ADD 挿入
     this.lectureList.add(4, "JavaScript");
-    
+
     // REMOVE 削除
     this.lectureList.remove(7);
 
-    for (String list: this.lectureList) System.out.print(list + " / ");
+    for (String list : this.lectureList)
+      System.out.print(list + " / ");
     System.out.println("");
   }
 }

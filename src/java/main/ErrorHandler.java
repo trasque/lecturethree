@@ -1,9 +1,8 @@
 public class ErrorHandler {
-  private ErrorHandler() {
-  }
+  private ErrorHandler() {}
 
   public static int errorCommand(int command) {
-    switch(command) {
+    switch (command) {
       // エラーハンドリング1 : 再実行要請
       case 1 -> {
         System.out.println("]] 再実行 [[");
