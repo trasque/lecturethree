@@ -22,9 +22,6 @@ public class GameDialogue implements CatchCopyIndex {
     this.lectureMap.remove("トヨタ自動車");
 
     // キーの一覧を配列で取得
-    Object[] keys = lectureMap.keySet().toArray();
-    for (Object key : keys) {
-      System.out.println(key + "『" + lectureMap.get(key) + "』");
-    }
+    lectureMap.forEach((key, value) -> System.out.println(key + "『" + value + "』"));
   }
 }

@@ -25,8 +25,7 @@ public class LanguageList implements ProgrammingElement {
     // REMOVE 削除
     this.lectureList.remove(7);
 
-    for (String list : this.lectureList)
-      System.out.print(list + " / ");
-    System.out.println("");
+    lectureList.stream().sorted().forEach(value -> System.out.print(value + " / "));
+    System.out.println();
   }
 }

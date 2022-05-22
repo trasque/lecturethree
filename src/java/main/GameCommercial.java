@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameCommercial implements CatchCopyIndex {
@@ -22,9 +23,6 @@ public class GameCommercial implements CatchCopyIndex {
     this.lectureMap.remove("三菱自動車工業");
 
     // キーの一覧を配列で取得
-    Object[] keys = lectureMap.keySet().toArray();
-    for (Object key : keys) {
-      System.out.println(key + "『" + lectureMap.get(key) + "』");
-    }
+    lectureMap.forEach((key, value) -> System.out.println(key + "『" + value + "』"));
   }
 }
