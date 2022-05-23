@@ -22,8 +22,7 @@ public class TypeList implements ProgrammingElement {
     // ADD 挿入
     this.lectureList.add(7, "Map");
 
-    for (String list : this.lectureList)
-      System.out.print(list + " / ");
-    System.out.println("");
+    lectureList.stream().sorted().forEach(value -> System.out.print(value + " / "));
+    System.out.println();
   }
 }
