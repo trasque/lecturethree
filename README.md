@@ -9,6 +9,10 @@ Interface, List, Map, Exception の練習プログラムです。
 2. 共通するインターフェースを持つ異なる2つのクラスを使用して2つのマップを表示する。
 3. プログラムを終了する。
 
+## 動作画面アニメーション
+
+![lecturethree_animation.gif](lecturethree_animation.gif)
+
 ## List / Map の作成と表示
 
 2つのリスト
